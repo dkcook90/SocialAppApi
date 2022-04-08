@@ -6,7 +6,7 @@ const thoughtSchema = new Schema(
     {
         thoughtText: { type: String, required: true, minlength: 1, maxlength: 280 },
         createdAt: { type: String, default: moment().format('MMMM Do YYYY, h:mm:ss a')},
-        userName: { type: String, required: true },
+        username: { type: String, required: true },
         reactions: [reactionSchema]
     },
     {
@@ -20,7 +20,7 @@ const thoughtSchema = new Schema(
 thoughtSchema
     .virtual('reactionCount')
     .get(function () {
-        return `Reactions to this thought: ${this.reaction.length}`
+        return `Reactions to this thought: ${this.reactions.length}`
     });
 
 const thought = model('thought', thoughtSchema);

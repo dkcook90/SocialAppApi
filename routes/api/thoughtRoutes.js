@@ -20,11 +20,11 @@ router
     .delete(deleteThought);
 
 // localhost:3001/api/thoughts/:thoughtId/addReaction
-router.route('/thoughts/:thoughtId/addReaction')
+router.route('/:thoughtId/addReaction')
     .put(addReaction)
 
 // localhost:3001/api/thoughts/:thoughtId/deleteReaction
-router.route('/thoughts/:thoughtId/deleteReaction')
+router.route('/:thoughtId/deleteReaction')
     .put(deleteReaction)
 
 module.exports = router;
