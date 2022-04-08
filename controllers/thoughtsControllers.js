@@ -55,5 +55,34 @@ module.exports = {
             : res.json({ message: 'Thought successfully deleted!'})
         )
         .catch((err) => res.status(500).json(err))
+    },
+
+    // add reaction to thought array
+    addReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $push: { "reactions": req.body }},
+            { runValidators: true }
+        )
+        .then((reaction) =>
+            !thought
+            ? res.status(404).json({ message: 'Cannot add reaction, no thought was found with this ID'})
+            : res.json(reaction)
+        )
+        .catch((err) => res.status(500).json(err))
+    },
+
+    // delete a reaction from a thought
+    deleteReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: {"reactions": req.body }},
+        )
+        .then((thought) =>
+            !thought
+            ? res.status(404).json({ message: 'Cannot delete reaction, no thought was found with this ID'})
+            : res.json({ message: 'Reaction successfully deleted!'})
+        )
+        .catch((err) => res.status(500).json(err))
     }
 }

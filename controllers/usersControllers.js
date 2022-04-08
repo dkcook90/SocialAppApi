@@ -56,5 +56,34 @@ module.exports = {
             console.log(err);
             res.status(500).json(err);
         });
+    },
+
+    // post a friend to a user's friend list
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $push: { "friends": req.params.friendId }},
+            { runValidators: true, new: true }
+        )
+        .then((user) =>
+            !user
+            ? res.status(404).json({ message: 'Cannot add Friend, no user was found with that ID' })
+            : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err))
+    },
+
+    // delete a friend from a user's friend list
+    deleteFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId},
+            { $pull: { "friends": req.params.friendId }}
+        )
+        .then((user) =>
+            !user
+            ? res.status(404).json({ message: 'Cannot remove Friend, no user was found with that ID'})
+            : res.json({ message: 'Friend successfully removed!'})
+        )
+        .catch((err) => res.status(500).json(err))
     }
 }
