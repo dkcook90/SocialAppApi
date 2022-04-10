@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongoose').Types;
-const { User, Thought, Reaction } = require('../models');
+const { User, Thought } = require('../models');
+const { post } = require('../models/reaction');
 const thought = require('../models/thought');
 
 module.exports = {
@@ -27,7 +28,18 @@ module.exports = {
     // post new thought (push new thoughts id to the associated user's thoughts array)
     createThought(req, res) {
         Thought.create(req.body)
-        .then((thought) => res.json(thought))
+        .then((thought) => {
+            return User.findOneAndUpdate(
+                { _id: req.body.userid },
+                { $addToSet: { thoughts: thought._id }},
+                { new: true }
+            )
+        })
+        .then((user) =>
+            !user
+            ?res.status(404).json({ message: 'Thought posted but no user was found with this ID'})
+            :res.json({ message: 'Thought posted successfully!' })
+        )
         .catch((err) => res.status(500).json(err));
     },
 

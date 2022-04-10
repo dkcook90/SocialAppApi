@@ -19,12 +19,12 @@ router
     .delete(deleteUser)
     .put(updateUser);
 
-// localhost:3001/api/users/:userId/addfriends/:friendId
-router.route('/:userId/addfriends/:friendId')
+// localhost:3001/api/users/:userId/addFriends/:friendId
+router.route('/:userId/addFriends/:friendId')
     .put(addFriend)
 
-// localhost:3001/api/users/:userId/removefriends/:friendId
-router.route('/:userId/removefriends/:friendId')
+// localhost:3001/api/users/:userId/removeFriends/:friendId
+router.route('/:userId/removeFriends/:friendId')
     .put(deleteFriend)
     
 

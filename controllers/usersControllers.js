@@ -1,10 +1,10 @@
 const { ObjectId } = require('mongoose').Types;
-const { User, Thought, Reaction } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
     // get all users
     getUsers(req,res) {
-        User.find()
+        User.find().populate('thoughts').populate('friends')
         .then(async (users) => {
             return res.json(users);
         })
@@ -16,7 +16,7 @@ module.exports = {
 
     // get a single user by thier id AND populated thought and friend data
     getSingleUser(req, res) {
-        User.findOne({ _id: req.params.userId })
+        User.findOne({ _id: req.params.userId }).populate('thoughts').populate('friends')
         .then(async (user) => 
         !user ? res.status(404).json({ message: 'No user found with this ID'}) 
         : res.json({user}))
